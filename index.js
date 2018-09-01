@@ -142,8 +142,13 @@ async function solve(start, end) {
         allAsins.push(ASIN[i].asin)
     }
 
+    ind = 0
     for(var i=0; i<allAsins.length; i++) {
-        await getProduct(allAsins[i])
+        getProduct(allAsins[i])
+        ind ++;
+        if(ind%20 == 0) {
+            sleep(20000)
+        }
     }
 
     browser.close()
@@ -161,3 +166,13 @@ app.get("/refresh/:start/:end", function(req, res) {
 //     var port = server.address().port
 //     console.log("Listening on ", host, port)
 // })
+
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+  }
