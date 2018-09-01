@@ -145,11 +145,7 @@ async function solve(start, end) {
     ind = 0
     promises = []
     for(var i=0; i<allAsins.length; i++) {
-        promises.push( getProduct(allAsins[i]) )
-        ind ++;
-        if(ind%20 == 0) {
-            sleep(20000)
-        }
+        promises.push(await getProduct(allAsins[i]) )
     }
 
     await Promise.all(promises)
