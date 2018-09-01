@@ -14,7 +14,7 @@ const PRODUCT_TITLE_SELECTOR = "#productTitle"
 
 async function getDriver() {
     var browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     return browser
@@ -148,6 +148,8 @@ async function solve(start, end) {
 
     browser.close()
 }
+
+solve(process.argv[2], process.argv[3])
 
 app.get("/refresh/:start/:end", function(req, res) {
     solve(req.params.start, req.params.end)
