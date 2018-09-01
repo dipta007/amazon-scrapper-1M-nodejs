@@ -72,9 +72,11 @@ async function getProduct(asin) {
             })
         }
         await page.goto('about:blank')
-        page.close()
+        await page.close()
     } catch(err) {
         console.log(err)
+        await page.goto('about:blank')
+        await page.close()
     }
 }
 
@@ -95,7 +97,7 @@ async function scrapeSearch(url, starting, ending) {
         console.log(err)
     }
     await page.goto('about:blank')
-    page.close()
+    await page.close()
     await Promise.all(promises1)
 }
 
@@ -129,6 +131,7 @@ async function solve() {
         promises.push(promise)
     }
     await Promise.all(promises)
+    browser.close()
 }
 
 solve();
