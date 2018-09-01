@@ -6,18 +6,18 @@ const PRODUCT_URL = "https://www.amazon.com/dp/(ASIN)"
 const PAGE_LIMIT = 1
 search_fields = [
     "iphone",
-    // "mobile",
-    // "beauty",
-    // "hair",
-    // "apple",
-    // "macbook",
-    // "calcukator",
-    // "pen",
-    // "glass",
-    // "note 8",
-    // "samsung",
-    // "wallet",
-    // "watch"
+    "mobile",
+    "beauty",
+    "hair",
+    "apple",
+    "macbook",
+    "calcukator",
+    "pen",
+    "glass",
+    "note 8",
+    "samsung",
+    "wallet",
+    "watch"
 ]
 
 const SEARCH_RESULT_SELECTOR = '#atfResults > #s-results-list-atf > li'
@@ -64,7 +64,6 @@ async function scrapeSearch(url, starting, ending) {
     var page = await browser.newPage()
     await page.goto(url)
 
-    ind = 1
     try {
         let asins = await page.evaluate((sel) => {
             const lis = Array.from(document.querySelectorAll(SEARCH_RESULT_SELECTOR))
@@ -74,7 +73,6 @@ async function scrapeSearch(url, starting, ending) {
             asin = asins[j]
             await getProduct(asin)
         }
-        ind++
     } catch(err) {
         console.log(url, i)
         console.log(err)
