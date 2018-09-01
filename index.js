@@ -118,7 +118,7 @@ async function solve() {
     // }
 
     for(var i=0; i<search_fields.length; i++) {
-        promise = getProduct(asins[i])
+        promise = getProduct(search_fields[i])
         promises.push(promise)
     }
     await Promise.all(promises)
