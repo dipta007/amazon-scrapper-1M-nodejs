@@ -26,7 +26,8 @@ const PRODUCT_TITLE_SELECTOR = "#productTitle"
 
 async function getDriver() {
     var browser = await puppeteer.launch({
-        headless: true
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     return browser
 }
