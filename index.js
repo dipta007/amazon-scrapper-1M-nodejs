@@ -69,7 +69,7 @@ async function getProduct(asin) {
             })
         }
 
-        // console.log(productTitle, images, price)
+        console.log(productTitle, images, price)
     
         if(productTitle && images && images.length && price) {
             var data = {
