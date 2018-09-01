@@ -152,18 +152,18 @@ async function solve(start, end) {
     browser.close()
 }
 
-solve(process.argv[2], process.argv[3])
+// solve(process.argv[2], process.argv[3])
 
 app.get("/refresh/:start/:end", function(req, res) {
     solve(req.params.start, req.params.end)
     res.send("completed")
 })
 
-// var server = app.listen(8081, function() {
-//     var host = server.address().address
-//     var port = server.address().port
-//     console.log("Listening on ", host, port)
-// })
+var server = app.listen(8081, function() {
+    var host = server.address().address
+    var port = server.address().port
+    console.log("Listening on ", host, port)
+})
 
 
 function sleep(milliseconds) {
