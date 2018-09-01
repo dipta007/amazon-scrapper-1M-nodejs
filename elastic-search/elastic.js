@@ -40,7 +40,7 @@ data = {
 }
 */
 function insertOne(data) {
-    return createIndex('amazon').then((resp) => {
+    return createIndex('amazonn').then((resp) => {
         client.index(data, function(err, resp, status) {
             console.log(resp._id)
         })

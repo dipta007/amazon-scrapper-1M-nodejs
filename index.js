@@ -73,7 +73,7 @@ async function getProduct(asin) {
     
         if(productTitle && images && images.length && price) {
             var data = {
-                index: 'amazon',
+                index: 'amazonn',
                 id: asin,
                 type: 'producttitle',
                 body: {
