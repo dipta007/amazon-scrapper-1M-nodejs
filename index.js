@@ -92,6 +92,7 @@ async function giveASearch(searchText) {
 
 
 async function solve() {
+    process.setMaxListeners(0)
     search_fields.forEach(src => {
         giveASearch(src)
     });
