@@ -3,24 +3,24 @@ const elasticSearch = require('./elastic-search/elastic')
 
 const SEARCH_URL = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=(KEYWORD)&page=(PAGE)"
 const PRODUCT_URL = "https://www.amazon.com/dp/(ASIN)"
-const PAGE_LIMIT = 1
+const PAGE_LIMIT = 2
 search_fields = [
     "iphone",
-    "mobile",
-    "beauty",
-    "hair",
-    "apple",
-    "macbook",
-    "calcukator",
-    "pen",
-    "glass",
-    "note 8",
-    "samsung",
-    "wallet",
-    "watch"
+    // "mobile",
+    // "beauty",
+    // "hair",
+    // "apple",
+    // "macbook",
+    // "calcukator",
+    // "pen",
+    // "glass",
+    // "note 8",
+    // "samsung",
+    // "wallet",
+    // "watch"
 ]
 
-const SEARCH_RESULT_SELECTOR = '#atfResults > #s-results-list-atf > li'
+const SEARCH_RESULT_SELECTOR = '#s-results-list-atf > li'
 const PRODUCT_TITLE_SELECTOR = "#productTitle"
 
 
@@ -67,15 +67,15 @@ async function scrapeSearch(url, starting, ending) {
 
     try {
         let asins = await page.evaluate((sel) => {
-            const lis = Array.from(document.querySelectorAll(SEARCH_RESULT_SELECTOR))
+            const lis = Array.from(document.querySelectorAll('#s-results-list-atf > li'))
             return lis.map(li => li.getAttribute('data-asin'))
-        }, resultSelector)
+        }, '#atfResults')
+        // console.log(asins)
         for(var j=0; j<asins.length; j++) {
             asin = asins[j]
             await getProduct(asin)
         }
     } catch(err) {
-        //console.log(url, i)
         console.log(err)
     }
     browser.close()
