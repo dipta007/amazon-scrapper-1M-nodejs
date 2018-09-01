@@ -118,11 +118,6 @@ async function giveASearch(searchText) {
     }
 }
 
-asins = [
-    "B000050FET",
-    "B001CYA1HA"
-]
-
 async function solve() {
     process.setMaxListeners(0)
     // for(var i=0; i<asins.length; i++){
