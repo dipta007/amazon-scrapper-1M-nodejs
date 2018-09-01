@@ -81,27 +81,32 @@ async function scrapeSearch(url, starting, ending) {
     var page = await browser.newPage()
     await page.goto(url)
 
+    var promises = []
     try {
         asins = await page.evaluate((sel) => {
             const lis = Array.from(document.querySelectorAll('#atfResults > #s-results-list-atf > li'))
             return lis.map(li => li.getAttribute('data-asin'))
         }, '#atfResults')
         for(var j=0; j<asins.length; j++) {
-            getProduct(asins[j])
+            promises.push(getProduct(asins[j]))
         }
     } catch(err) {
         console.log(err)
     }
     page.close()
+    await Promise.all(promises)
 }
 
 async function giveASearch(searchText) {
+
+    var promise = []
     for(var page=1; page<=PAGE_LIMIT; page++) {
         url = SEARCH_URL.replace("(PAGE)", page)
         url = url.replace("(KEYWORD)", searchText)
 
-        scrapeSearch(url, (page-1)*30, page*30)
+        promises.push(scrapeSearch(url, (page-1)*30, page*30))
     }
+    await Promise.all(promises)
 }
 asins = [
     "B001CYA1HA",
