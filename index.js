@@ -29,6 +29,7 @@ async function getAnother(page) {
         return now.map(nw => nw ? nw.getAttribute('data-asin') : null)
     })
 
+    print(asins)
     asins.forEach(item => {
         if(item)
             allAsins.push(item)
