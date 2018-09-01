@@ -3,21 +3,21 @@ const elasticSearch = require('./elastic-search/elastic')
 
 const SEARCH_URL = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=(KEYWORD)&page=(PAGE)"
 const PRODUCT_URL = "https://www.amazon.com/dp/(ASIN)"
-const PAGE_LIMIT = 2
+const PAGE_LIMIT = 20
 search_fields = [
     "iphone",
-    // "mobile",
-    // "beauty",
-    // "hair",
-    // "apple",
-    // "macbook",
-    // "calcukator",
-    // "pen",
-    // "glass",
-    // "note 8",
-    // "samsung",
-    // "wallet",
-    // "watch"
+    "mobile",
+    "beauty",
+    "hair",
+    "apple",
+    "macbook",
+    "calcukator",
+    "pen",
+    "glass",
+    "note 8",
+    "samsung",
+    "wallet",
+    "watch"
 ]
 
 const SEARCH_RESULT_SELECTOR = '#s-results-list-atf > li'
