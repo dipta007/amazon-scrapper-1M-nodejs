@@ -41,13 +41,13 @@ async function getProduct(asin) {
     
         await page.goto(url)
     
-        let productTitle = await page.evaluate((sel) => {
+        productTitle = await page.evaluate((sel) => {
             var ele = document.querySelector(sel)
             return ele ? ele.innerHTML.trim() : null
         }, '#productTitle')
 
 
-        let images = await page.evaluate((sel) => {
+        images = await page.evaluate((sel) => {
             var imgs = Array.from(document.querySelectorAll('li > span > span > span > span > img'))
             return imgs.map(img => img.getAttribute('src'))
         })
@@ -95,7 +95,7 @@ async function scrapeSearch(url, starting, ending) {
     await page.goto(url)
 
     try {
-        let asins = await page.evaluate((sel) => {
+        asins = await page.evaluate((sel) => {
             const lis = Array.from(document.querySelectorAll('#atfResults > #s-results-list-atf > li'))
             return lis.map(li => li.getAttribute('data-asin'))
         }, '#atfResults')
