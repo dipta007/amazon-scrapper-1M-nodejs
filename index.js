@@ -107,10 +107,10 @@ async function giveASearch(searchText) {
         url = SEARCH_URL.replace("(PAGE)", page)
         url = url.replace("(KEYWORD)", searchText)
 
-        promises2.push(scrapeSearch(url, (page-1)*30, page*30))
-        // scrapeSearch(url, (page-1)*30, page*30)
+        // promises2.push(scrapeSearch(url, (page-1)*30, page*30))
+        await scrapeSearch(url, (page-1)*30, page*30)
     }
-    await Promise.all(promises2)
+    // await Promise.all(promises2)
 }
 asins = [
     "B001CYA1HA",
