@@ -123,7 +123,7 @@ async function solve() {
     // }
 
     for(var i=0; i<search_fields.length; i++) {
-        promise = getProduct(search_fields[i])
+        promise = giveASearch(search_fields[i])
         promises.push(promise)
     }
     await Promise.all(promises)
