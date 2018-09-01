@@ -72,7 +72,7 @@ async function getProduct(asin) {
 
         console.log(asin, productTitle, images, price)
     
-        //if(productTitle && images && images.length && price) {
+        if(productTitle && images && images.length && price) {
             var data = {
                 index: 'amazonn',
                 id: asin,
@@ -87,7 +87,7 @@ async function getProduct(asin) {
         
             elasticSearch.insertOne(data).then((resp) => {
             })
-        //}
+        }
 
         await getAnother(page)
         await page.goto('about:blank')
@@ -132,11 +132,19 @@ async function giveASearch(searchText) {
     // await Promise.all(promises2)
 }
 
+// asdf = [
+//     "B00025696C",
+//     "B071J984BV"
+// ]
 
 async function solve(start, end) {
     process.setMaxListeners(0)
     browser = await getDriver()
     console.log(start, end)
+
+    // asdf.forEach(item => {
+    //     allAsins.push(item)
+    // });
 
     for(var i=start; i<=end; i++) {
         allAsins.push(ASIN[i].asin)
@@ -152,6 +160,7 @@ async function solve(start, end) {
     browser.close()
 }
 
+// solve(0,1)
 // solve(process.argv[2], process.argv[3])
 
 app.get("/refresh/:start/:end", function(req, res) {
