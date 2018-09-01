@@ -23,7 +23,7 @@ browser = null
 
 async function getProduct(asin) {
     try {
-        var page = await browser.newPage()
+        let page = await browser.newPage()
         url = PRODUCT_URL + asin
     
         await page.goto(url)
@@ -75,13 +75,12 @@ async function getProduct(asin) {
         await page.close()
     } catch(err) {
         console.log(err)
-        await page.goto('about:blank')
-        await page.close()
     }
+    
 }
 
 async function scrapeSearch(url, starting, ending) {
-    var page = await browser.newPage()
+    let page = await browser.newPage()
     await page.goto(url)
 
     var promises1 = []
