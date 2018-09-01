@@ -109,7 +109,7 @@ async function giveASearch(searchText) {
 
         promises2.push(await scrapeSearch(url, (page-1)*30, page*30))
     }
-    await Promise.all(promises2)
+    // await Promise.all(promises2)
 }
 asins = [
     "B001CYA1HA",
@@ -129,7 +129,7 @@ async function solve() {
         promise = await giveASearch(search_fields[i])
         promises.push(promise)
     }
-    await Promise.all(promises)
+    // await Promise.all(promises)
     browser.close()
 }
 
