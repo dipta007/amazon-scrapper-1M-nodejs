@@ -26,7 +26,7 @@ async function getProduct(asin) {
         let page = await browser.newPage()
         url = PRODUCT_URL + asin
     
-        await page.goto(url)
+        await page.goto(url, {waitUntil: 'domcontentloaded'})
     
         productTitle = await page.evaluate((sel) => {
             var ele = document.querySelector(sel)
@@ -81,7 +81,7 @@ async function getProduct(asin) {
 
 async function scrapeSearch(url, starting, ending) {
     let page = await browser.newPage()
-    await page.goto(url)
+    await page.goto(url, {waitUntil: 'domcontentloaded'})
 
     var promises1 = []
     try {
