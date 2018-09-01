@@ -100,8 +100,7 @@ async function scrapeSearch(url, starting, ending) {
             return lis.map(li => li.getAttribute('data-asin'))
         }, '#atfResults')
         for(var j=0; j<asins.length; j++) {
-            asin = asins[j]
-            getProduct(asin)
+            getProduct(asins[j])
         }
     } catch(err) {
         console.log(err)
