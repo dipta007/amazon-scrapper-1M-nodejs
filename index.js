@@ -156,8 +156,8 @@ app.get("/refresh/:start/:end", function(req, res) {
     res.send("completed")
 })
 
-var server = app.listen(8081, function() {
-    var host = server.address().address
-    var port = server.address().port
-    console.log("Listening on ", host, port)
-})
+// var server = app.listen(8081, function() {
+//     var host = server.address().address
+//     var port = server.address().port
+//     console.log("Listening on ", host, port)
+// })
