@@ -100,7 +100,7 @@ async function scrapeSearch(url, starting, ending) {
             return lis.map(li => li.getAttribute('data-asin'))
         }, '#atfResults')
         for(var j=0; j<asins.length; j++) {
-            await getProduct(asins[j])
+            getProduct(asins[j])
         }
     } catch(err) {
         console.log(err)
@@ -116,7 +116,10 @@ async function giveASearch(searchText) {
         await scrapeSearch(url, (page-1)*30, page*30)
     }
 }
-
+// asins = [
+//     "B001CYA1HA",
+//     "B000050FET"
+// ]
 async function solve() {
     process.setMaxListeners(0)
     // for(var i=0; i<asins.length; i++){
