@@ -75,7 +75,7 @@ async function scrapeSearch(url, starting, ending) {
             await getProduct(asin)
         }
     } catch(err) {
-        console.log(url, i)
+        //console.log(url, i)
         console.log(err)
     }
     browser.close()
