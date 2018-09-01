@@ -137,20 +137,21 @@ async function solve(start, end) {
     browser = await getDriver()
     console.log(start, end)
 
-    ind = 0
     for(var i=start; i<=end; i++) {
         allAsins.push(ASIN[i].asin)
     }
 
     ind = 0
+    promises = []
     for(var i=0; i<allAsins.length; i++) {
-        getProduct(allAsins[i])
+        promises.push( getProduct(allAsins[i]) )
         ind ++;
         if(ind%20 == 0) {
             sleep(20000)
         }
     }
 
+    await Promise.all(promises)
     browser.close()
 }
 
