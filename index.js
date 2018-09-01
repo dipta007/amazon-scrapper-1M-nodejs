@@ -92,7 +92,7 @@ async function giveASearch(searchText) {
 
 async function solve() {
     search_fields.forEach(src => {
-        await giveASearch(src)
+        giveASearch(src)
     });
 }
 
