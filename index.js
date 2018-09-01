@@ -108,7 +108,7 @@ async function giveASearch(searchText) {
         url = url.replace("(KEYWORD)", searchText)
 
         // promises2.push(await scrapeSearch(url, (page-1)*30, page*30))
-        await scrapeSearch(url, (page-1)*30, page*30)
+        scrapeSearch(url, (page-1)*30, page*30)
     }
     // await Promise.all(promises2)
 }
