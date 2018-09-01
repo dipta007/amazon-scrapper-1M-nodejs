@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 const elasticSearch = require('./elastic-search/elastic')
-const asin = require('./get-asin')
+var ASIN = require('./Fjson.json')
+var express = require('express')
+var app = express()
 
 const SEARCH_URL = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=(KEYWORD)&page=(PAGE)"
 const PRODUCT_URL = "https://www.amazon.com/dp/"
@@ -10,18 +12,32 @@ search_fields = require('./product-list')
 const SEARCH_RESULT_SELECTOR = '#s-results-list-atf > li'
 const PRODUCT_TITLE_SELECTOR = "#productTitle"
 
-
 async function getDriver() {
     var browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     return browser
 }
 
+allAsins = []
 browser = null
 
+async function getAnother(page) {
+    let asins = await page.evaluate((sel) => {
+        var now = Array.from(document.querySelectorAll(".a-carousel-card > div"))
+        return now.map(nw => nw ? nw.getAttribute('data-asin') : null)
+    })
+
+    asins.forEach(item => {
+        if(item)
+            allAsins.push(item)
+    })
+}
+
+
 async function getProduct(asin) {
+    if(!asin) return
     try {
         let page = await browser.newPage()
         url = PRODUCT_URL + asin
@@ -71,6 +87,8 @@ async function getProduct(asin) {
             elasticSearch.insertOne(data).then((resp) => {
             })
         }
+
+        await getAnother(page)
         await page.goto('about:blank')
         await page.close()
     } catch(err) {
@@ -112,25 +130,32 @@ async function giveASearch(searchText) {
     }
     // await Promise.all(promises2)
 }
-asins = [
-    "B001CYA1HA",
-    "B000050FET"
-]
-async function solve() {
+
+
+async function solve(start, end) {
     process.setMaxListeners(0)
     browser = await getDriver()
+    console.log(start, end)
 
-    var promises = [];
-    // for(var i=0; i<asins.length; i++){
-    //     promise = getProduct(asins[i])
-    //     promises.push(promise)
-    // }
-
-    for(var i=0; i<search_fields.length; i++) {
-        await giveASearch(search_fields[i])
+    ind = 0
+    for(var i=start; i<=end; i++) {
+        allAsins.push(ASIN[i].asin)
     }
-    // await Promise.all(promises)
+
+    for(var i=0; i<allAsins.length; i++) {
+        await getProduct(allAsins[i])
+    }
+
     browser.close()
 }
 
-solve();
+app.get("/refresh/:start/:end", function(req, res) {
+    solve(req.params.start, req.params.end)
+    res.send("completed")
+})
+
+var server = app.listen(8081, function() {
+    var host = server.address().address
+    var port = server.address().port
+    console.log("Listening on ", host, port)
+})
