@@ -4,22 +4,8 @@ const asin = require('./get-asin')
 
 const SEARCH_URL = "https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=(KEYWORD)&page=(PAGE)"
 const PRODUCT_URL = "https://www.amazon.com/dp/"
-const PAGE_LIMIT = 1
-search_fields = [
-    "iphone",
-    "mobile",
-    "beauty",
-    "hair",
-    "apple",
-    "macbook",
-    "calcukator",
-    "pen",
-    "glass",
-    "note 8",
-    "samsung",
-    "wallet",
-    "watch"
-]
+const PAGE_LIMIT = 20
+search_fields = require('./product-list')
 
 const SEARCH_RESULT_SELECTOR = '#s-results-list-atf > li'
 const PRODUCT_TITLE_SELECTOR = "#productTitle"
@@ -27,15 +13,16 @@ const PRODUCT_TITLE_SELECTOR = "#productTitle"
 
 async function getDriver() {
     var browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     return browser
 }
 
+browser = null
+
 async function getProduct(asin) {
     try {
-        var browser = await getDriver()
         var page = await browser.newPage()
         url = PRODUCT_URL + asin
     
@@ -65,6 +52,8 @@ async function getProduct(asin) {
                 return now ? parseFloat(now.innerHTML.replace('$', ''))*100.0 : null
             })
         }
+
+        // console.log(productTitle, images, price)
     
         if(productTitle && images && images.length && price) {
             var data = {
@@ -82,15 +71,13 @@ async function getProduct(asin) {
             elasticSearch.insertOne(data).then((resp) => {
             })
         }
-    
-        browser.close()
+        await page.close()
     } catch(err) {
         console.log(err)
     }
 }
 
 async function scrapeSearch(url, starting, ending) {
-    var browser = await getDriver()
     var page = await browser.newPage()
     await page.goto(url)
 
@@ -100,12 +87,12 @@ async function scrapeSearch(url, starting, ending) {
             return lis.map(li => li.getAttribute('data-asin'))
         }, '#atfResults')
         for(var j=0; j<asins.length; j++) {
-            await getProduct(asins[j])
+            getProduct(asins[j])
         }
     } catch(err) {
         console.log(err)
     }
-    browser.close()
+    page.close()
 }
 
 async function giveASearch(searchText) {
@@ -113,21 +100,29 @@ async function giveASearch(searchText) {
         url = SEARCH_URL.replace("(PAGE)", page)
         url = url.replace("(KEYWORD)", searchText)
 
-        await scrapeSearch(url, (page-1)*30, page*30)
+        scrapeSearch(url, (page-1)*30, page*30)
     }
 }
-// asins = [
-//     "B001CYA1HA",
-//     "B000050FET"
-// ]
+asins = [
+    "B001CYA1HA",
+    "B000050FET"
+]
 async function solve() {
     process.setMaxListeners(0)
+    browser = await getDriver()
+
+    var promises = [];
     // for(var i=0; i<asins.length; i++){
-    //     getProduct(asins[i])
+    //     promise = getProduct(asins[i])
+    //     promises.push(promise)
     // }
-    search_fields.forEach(src => {
-        giveASearch(src)
-    });
+
+    for(var i=0; i<search_fields.length; i++) {
+        promise = getProduct(asins[i])
+        promises.push(promise)
+    }
+    await Promise.all(promises)
+    browser.close()
 }
 
 solve();
