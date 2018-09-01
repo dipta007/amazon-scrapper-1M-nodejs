@@ -72,7 +72,7 @@ async function getProduct(asin) {
 
         console.log(asin, productTitle, images, price)
     
-        if(productTitle && images && images.length && price) {
+        //if(productTitle && images && images.length && price) {
             var data = {
                 index: 'amazonn',
                 id: asin,
@@ -87,7 +87,7 @@ async function getProduct(asin) {
         
             elasticSearch.insertOne(data).then((resp) => {
             })
-        }
+        //}
 
         await getAnother(page)
         await page.goto('about:blank')
