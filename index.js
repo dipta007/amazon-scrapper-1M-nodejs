@@ -107,7 +107,8 @@ async function giveASearch(searchText) {
         url = SEARCH_URL.replace("(PAGE)", page)
         url = url.replace("(KEYWORD)", searchText)
 
-        promises2.push(await scrapeSearch(url, (page-1)*30, page*30))
+        // promises2.push(await scrapeSearch(url, (page-1)*30, page*30))
+        await scrapeSearch(url, (page-1)*30, page*30)
     }
     // await Promise.all(promises2)
 }
@@ -126,8 +127,7 @@ async function solve() {
     // }
 
     for(var i=0; i<search_fields.length; i++) {
-        promise = await giveASearch(search_fields[i])
-        promises.push(promise)
+        await giveASearch(search_fields[i])
     }
     // await Promise.all(promises)
     browser.close()
