@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "elasticsearch": "^15.1.1",
-    "puppeteer": "^1.7.0"
+    "puppeteer": "^1.7.0",
+    "threadpool-js": "^0.5.0"
   }
 }

@@ -13,7 +13,7 @@ const PRODUCT_TITLE_SELECTOR = "#productTitle"
 
 async function getDriver() {
     var browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     return browser
@@ -71,7 +71,8 @@ async function getProduct(asin) {
             elasticSearch.insertOne(data).then((resp) => {
             })
         }
-        await page.close()
+        await page.goto('about:blank')
+        page.close()
     } catch(err) {
         console.log(err)
     }
@@ -93,6 +94,7 @@ async function scrapeSearch(url, starting, ending) {
     } catch(err) {
         console.log(err)
     }
+    await page.goto('about:blank')
     page.close()
     await Promise.all(promises1)
 }
@@ -104,7 +106,7 @@ async function giveASearch(searchText) {
         url = SEARCH_URL.replace("(PAGE)", page)
         url = url.replace("(KEYWORD)", searchText)
 
-        promises2.push(scrapeSearch(url, (page-1)*30, page*30))
+        promises2.push(await scrapeSearch(url, (page-1)*30, page*30))
     }
     await Promise.all(promises2)
 }
@@ -123,11 +125,10 @@ async function solve() {
     // }
 
     for(var i=0; i<search_fields.length; i++) {
-        promise = giveASearch(search_fields[i])
+        promise = await giveASearch(search_fields[i])
         promises.push(promise)
     }
     await Promise.all(promises)
-    browser.close()
 }
 
 solve();
